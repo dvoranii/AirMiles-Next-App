@@ -1,6 +1,6 @@
 import { APP_NAME } from "@/lib/cross-cutting/constants";
 import Image from "next/image";
-import logo from "../../public/airmiles-logo.png";
+import logo from "@/public/airmiles-logo.png";
 
 export function DashboardHeader() {
   return (

@@ -3,7 +3,6 @@ import { mockChartData, mockPartners } from "@/lib/data/mock-data";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 export default function AnalyticsPage() {
-  // Calculate aggregate metrics
   const totalEarned = mockChartData.reduce((sum, d) => sum + d.earned, 0);
   const totalRedeemed = mockChartData.reduce((sum, d) => sum + d.redeemed, 0);
   const netGrowth = totalEarned - totalRedeemed;

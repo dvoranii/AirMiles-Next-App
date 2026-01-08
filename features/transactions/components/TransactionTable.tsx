@@ -10,10 +10,7 @@ import {
 } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 import { Transaction } from "@/types";
-import {
-  TRANSACTION_TYPES,
-  //   STATUS_COLORS,
-} from "@/lib/cross-cutting/constants";
+import { TRANSACTION_TYPES } from "@/lib/cross-cutting/constants";
 import { ArrowUpRight, ArrowDownRight } from "lucide-react";
 
 interface TransactionTableProps {

@@ -2,31 +2,9 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { BarChart3, Receipt, Store, Home } from "lucide-react";
-import { cn } from "@/lib/utils";
 
-const navItems = [
-  {
-    title: "Overview",
-    href: "/dashboard",
-    icon: Home,
-  },
-  {
-    title: "Analytics",
-    href: "/dashboard/analytics",
-    icon: BarChart3,
-  },
-  {
-    title: "Transactions",
-    href: "/dashboard/transactions",
-    icon: Receipt,
-  },
-  {
-    title: "Partners",
-    href: "/dashboard/partners",
-    icon: Store,
-  },
-];
+import { cn } from "@/lib/utils";
+import { navItems } from "@/lib/cross-cutting/config/navigation";
 
 export function DashboardNav() {
   const pathname = usePathname();

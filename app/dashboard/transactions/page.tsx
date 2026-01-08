@@ -1,18 +1,31 @@
+"use client";
+
 import { TransactionTable } from "@/features/transactions/components/TransactionTable";
+import { TransactionFilters } from "@/features/transactions/components/TransactionFilters";
+import { useTransactionFilters } from "@/features/transactions/hooks/useTransactionFilters";
 import { mockTransactions } from "@/lib/data/mock-data";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 export default function TransactionsPage() {
-  // Calculate summary stats
-  const totalEarned = mockTransactions
+  const {
+    searchTerm,
+    setSearchTerm,
+    typeFilter,
+    setTypeFilter,
+    filteredTransactions,
+    resetFilters,
+    hasActiveFilters,
+  } = useTransactionFilters(mockTransactions);
+
+  const totalEarned = filteredTransactions
     .filter((t) => t.type === "earn")
     .reduce((sum, t) => sum + t.miles, 0);
 
-  const totalRedeemed = mockTransactions
+  const totalRedeemed = filteredTransactions
     .filter((t) => t.type === "redeem")
     .reduce((sum, t) => sum + t.miles, 0);
 
-  const completedCount = mockTransactions.filter(
+  const completedCount = filteredTransactions.filter(
     (t) => t.status === "completed"
   ).length;
 
@@ -35,7 +48,8 @@ export default function TransactionsPage() {
               +{totalEarned.toLocaleString()}
             </div>
             <p className="text-xs text-muted-foreground mt-1">
-              From {mockTransactions.filter((t) => t.type === "earn").length}{" "}
+              From{" "}
+              {filteredTransactions.filter((t) => t.type === "earn").length}{" "}
               transactions
             </p>
           </CardContent>
@@ -52,7 +66,8 @@ export default function TransactionsPage() {
               -{totalRedeemed.toLocaleString()}
             </div>
             <p className="text-xs text-muted-foreground mt-1">
-              From {mockTransactions.filter((t) => t.type === "redeem").length}{" "}
+              From{" "}
+              {filteredTransactions.filter((t) => t.type === "redeem").length}{" "}
               redemptions
             </p>
           </CardContent>
@@ -65,8 +80,13 @@ export default function TransactionsPage() {
           <CardContent>
             <div className="text-2xl font-bold">{completedCount}</div>
             <p className="text-xs text-muted-foreground mt-1">
-              {((completedCount / mockTransactions.length) * 100).toFixed(0)}%
-              success rate
+              {filteredTransactions.length > 0
+                ? (
+                    (completedCount / filteredTransactions.length) *
+                    100
+                  ).toFixed(0)
+                : 0}
+              % success rate
             </p>
           </CardContent>
         </Card>
@@ -76,8 +96,17 @@ export default function TransactionsPage() {
         <CardHeader>
           <CardTitle>Recent Transactions</CardTitle>
         </CardHeader>
-        <CardContent>
-          <TransactionTable transactions={mockTransactions} />
+        <CardContent className="space-y-4">
+          <TransactionFilters
+            searchTerm={searchTerm}
+            setSearchTerm={setSearchTerm}
+            typeFilter={typeFilter}
+            setTypeFilter={setTypeFilter}
+            onReset={resetFilters}
+            hasActiveFilters={hasActiveFilters}
+            resultCount={filteredTransactions.length}
+          />
+          <TransactionTable transactions={filteredTransactions} />
         </CardContent>
       </Card>
     </div>
