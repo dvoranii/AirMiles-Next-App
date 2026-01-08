@@ -1,32 +1,34 @@
 import { mockPartners, mockTransactions } from "@/lib/data/mock-data";
 
 export default function calculateMetrics() {
-  const totalMilesIssued = mockPartners.reduce(
-    (sum, p) => sum + p.milesIssued,
-    0
+  // Perform all calculations in a single pass O(n)
+  const totals = mockPartners.reduce(
+    (acc, p) => {
+      acc.issued += p.milesIssued;
+      acc.redeemed += p.milesRedeemed;
+      if (p.status === "active") {
+        acc.activeCount += 1;
+      }
+      return acc;
+    },
+    { issued: 0, redeemed: 0, activeCount: 0 }
   );
-  const totalMilesRedeemed = mockPartners.reduce(
-    (sum, p) => sum + p.milesRedeemed,
-    0
-  );
-  const activePartners = mockPartners.filter(
-    (p) => p.status === "active"
-  ).length;
+
   const totalTransactions = mockTransactions.length;
 
   return {
     milesIssued: {
-      value: totalMilesIssued.toLocaleString(),
+      value: totals.issued.toLocaleString(),
       change: 12.5,
       label: "Total Miles Issued",
     },
     milesRedeemed: {
-      value: totalMilesRedeemed.toLocaleString(),
+      value: totals.redeemed.toLocaleString(),
       change: 8.2,
       label: "Total Miles Redeemed",
     },
     activePartners: {
-      value: activePartners.toString(),
+      value: totals.activeCount.toString(),
       change: 0,
       label: "Active Partners",
     },
