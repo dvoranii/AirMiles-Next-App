@@ -1,8 +1,11 @@
-import { mockPartners, mockTransactions } from "@/lib/data/mock-data";
+import { Partner, Transaction } from "@/types";
 
-export default function calculateMetrics() {
+export default function calculateMetrics(
+  partners: Partner[],
+  transactions: Transaction[]
+) {
   // Perform all calculations in a single pass O(n)
-  const totals = mockPartners.reduce(
+  const totals = partners.reduce(
     (acc, p) => {
       acc.issued += p.milesIssued;
       acc.redeemed += p.milesRedeemed;
@@ -14,7 +17,7 @@ export default function calculateMetrics() {
     { issued: 0, redeemed: 0, activeCount: 0 }
   );
 
-  const totalTransactions = mockTransactions.length;
+  const totalTransactions = transactions.length;
 
   return {
     milesIssued: {

@@ -1,18 +1,8 @@
-/**
- * Cross-Cutting Concern: Storage Abstraction
- *
- * Provides a consistent interface for localStorage operations
- * with error handling, type safety, and SSR compatibility
- */
-
 import { logger } from "./logger";
 
 class StorageService {
   private isClient = typeof window !== "undefined";
 
-  /**
-   * Get item from localStorage with type safety
-   */
   get<T>(key: string): T | null {
     if (!this.isClient) {
       logger.warn("Storage.get called on server", { key });
@@ -30,9 +20,6 @@ class StorageService {
     }
   }
 
-  /**
-   * Set item in localStorage with serialization
-   */
   set<T>(key: string, value: T): boolean {
     if (!this.isClient) {
       logger.warn("Storage.set called on server", { key });
@@ -50,9 +37,6 @@ class StorageService {
     }
   }
 
-  /**
-   * Remove item from localStorage
-   */
   remove(key: string): boolean {
     if (!this.isClient) {
       logger.warn("Storage.remove called on server", { key });
@@ -69,9 +53,6 @@ class StorageService {
     }
   }
 
-  /**
-   * Clear all localStorage items
-   */
   clear(): boolean {
     if (!this.isClient) {
       logger.warn("Storage.clear called on server");
@@ -88,9 +69,6 @@ class StorageService {
     }
   }
 
-  /**
-   * Check if key exists in localStorage
-   */
   has(key: string): boolean {
     if (!this.isClient) return false;
     return localStorage.getItem(key) !== null;

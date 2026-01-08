@@ -1,10 +1,11 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { TrendingUp, TrendingDown, Users, Award } from "lucide-react";
-
 import calculateMetrics from "@/lib/metrics";
+import { getDashboardData } from "@/lib/data/api-service";
 
-export default function DashboardPage() {
-  const metrics = calculateMetrics();
+export default async function DashboardPage() {
+  const { partners, transactions } = await getDashboardData();
+  const metrics = calculateMetrics(partners, transactions);
 
   return (
     <div className="space-y-6">
